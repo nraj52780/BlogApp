@@ -2,6 +2,7 @@ var express =require('express'),
     mongoose=require('mongoose'),
     bodyParser=require('body-parser'),
     methodOverride=require('method-override'),
+    expressSanitizer= require('express-sanitizer'),
     app= express();
 
 
@@ -9,6 +10,7 @@ app.use(express.static('public'));
 app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(expressSanitizer());
 //mongoose connection
 mongoose.connect("mongodb://localhost/blog_app", { useNewUrlParser: true });
 // model and schema
@@ -33,6 +35,8 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/blogs',(req,res)=>{
+  
+ // req.body.blog.body=req.sanitize(req.body.blog.body)
   Blog.find({},(err,blogs)=>{
       if(err)
       {
@@ -89,7 +93,7 @@ app.get('/blogs/:id/edit',(req,res)=>{
 });
 
 app.put('/blogs/:id',(req,res)=>{
-    
+    req.body.blog.body=req.sanitize(req.body.blog.body)
     Blog.findByIdAndUpdate(req.params.id,req.body.blog, (err,updatedBlog)=>{
         if(err)
           {
