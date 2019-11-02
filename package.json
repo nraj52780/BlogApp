@@ -15,6 +15,6 @@
     "express-fileupload": "^1.1.5",
     "express-sanitizer": "^1.0.5",
     "method-override": "^3.0.0",
-    "mongoose": "^5.6.0"
+    "mongoose": "^5.7.5"
   }
 }
